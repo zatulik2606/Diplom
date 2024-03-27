@@ -27,6 +27,8 @@
 
 ### Создание облачной инфраструктуры
 
+
+
 Для начала необходимо подготовить облачную инфраструктуру в ЯО при помощи [Terraform](https://www.terraform.io/).
 
 Особенности выполнения:
@@ -44,6 +46,9 @@
 3. Создайте VPC с подсетями в разных зонах доступности.
 4. Убедитесь, что теперь вы можете выполнить команды `terraform destroy` и `terraform apply` без дополнительных ручных действий.
 5. В случае использования [Terraform Cloud](https://app.terraform.io/) в качестве [backend](https://www.terraform.io/docs/language/settings/backends/index.html) убедитесь, что применение изменений успешно проходит, используя web-интерфейс Terraform cloud.
+
+
+
 
 Ожидаемые результаты:
 
@@ -139,3 +144,42 @@
 6. Ссылка на тестовое приложение и веб интерфейс Grafana с данными доступа.
 7. Все репозитории рекомендуется хранить на одном ресурсе (github, gitlab)
 
+
+
+## Решение
+
+Проверил какие серисные аккаунты есть.
+
+~~~
+root@debianv:~/diplom/bucket# yc iam service-account --folder-id b1gleu995pjjtd5eficp list
++----------------------+---------------+
+|          ID          |     NAME      |
++----------------------+---------------+
+| ajeb0pd4cnmcmpt367nu | zatulik       |
+| ajeduaf1a1gs4lu0uh71 | ezatulivetrov |
++----------------------+---------------+
+
+~~~
+Создал ключ
+
+~~~
+root@debianv:~/diplom/bucket# yc iam key create --service-account-name zatulik --output key.json --folder-id b1gleu995pjjtd5eficp
+id: aje53eefdpcsqakfom7a
+service_account_id: ajeb0pd4cnmcmpt367nu
+created_at: "2024-03-27T10:21:38.452079030Z"
+key_algorithm: RSA_2048
+
+~~~
+
+
+Проверил ключ.
+
+~~~
+root@debianv:~/diplom/bucket# yc iam key create --service-account-name zatulik --output key.json --folder-id b1gleu995pjjtd5eficp
+id: aje53eefdpcsqakfom7a
+service_account_id: ajeb0pd4cnmcmpt367nu
+created_at: "2024-03-27T10:21:38.452079030Z"
+key_algorithm: RSA_2048
+
+......
+~~~
