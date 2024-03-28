@@ -151,7 +151,7 @@
 Проверил какие серисные аккаунты есть.
 
 ~~~
-root@debianv:~/diplom/bucket# yc iam service-account --folder-id b1gleu995pjjtd5eficp list
+root@debianv:~/diplom/bucket# yc iam service-account --folder-id b1gleu995pjjtd5eficp list 
 +----------------------+---------------+
 |          ID          |     NAME      |
 +----------------------+---------------+
