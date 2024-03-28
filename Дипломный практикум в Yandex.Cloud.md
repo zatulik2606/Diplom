@@ -148,6 +148,8 @@
 
 ## Решение
 
+### Создание облачной инфраструктуры
+
 Проверил какие серисные аккаунты есть.
 
 ~~~
@@ -183,3 +185,13 @@ key_algorithm: RSA_2048
 
 ......
 ~~~
+
+### Создание Kubernetes кластера
+
+Создал сеть.
+
+yc vpc network create  --name net --labels my-label=netology --description "net yc"
+
+М.б. использовать вариант из 1-ого задания, но возникает ошибка про ресурсы.
+
+ yc vpc subnet create  --name my-subnet --zone ru-central1-c --range 10.1.2.0/24 --network-name net --description "subnet yc"
