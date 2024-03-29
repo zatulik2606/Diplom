@@ -371,9 +371,13 @@ Server Version: v1.29.3
 ~~~
 
 Проверяем ноды (если возникает ошибка с портом  ,то 
+
 mkdir -p $HOME/.kube
+
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
 )
 
 ~~~
