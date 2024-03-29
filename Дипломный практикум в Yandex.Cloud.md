@@ -188,13 +188,6 @@ key_algorithm: RSA_2048
 
 ### Создание Kubernetes кластера
 
-Создал сеть.
-
-yc vpc network create  --name net --labels my-label=netology --description "net yc"
-
-М.б. использовать вариант из 1-ого задания, но возникает ошибка про ресурсы.
-
- yc vpc subnet create  --name my-subnet --zone ru-central1-a --range 10.1.2.0/24 --network-name net --description "subnet yc"
 
 
  VM создались.
@@ -241,5 +234,16 @@ Welcome to Ubuntu 20.04.6 LTS (GNU/Linux 5.4.0-152-generic x86_64)
 git clone https://github.com/kubernetes-sigs/kubespray
 ~~~
 
+Устанавливаю зависимости.( обрати внимание на версию pip и python д.б. не ниже 3.9)
 
+~~~
+sudo pip3.10 install -r requirements.txt
+~~~
+
+
+Скачиваем инвенторку.
+
+~~~
+ sudo cp -rfp inventory/sample inventory/mycluster
+~~~
 
