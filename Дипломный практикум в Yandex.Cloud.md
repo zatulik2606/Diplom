@@ -251,3 +251,48 @@ sudo pip3.10 install -r requirements.txt
  sudo cp -rfp inventory/sample inventory/mycluster
 ~~~
 
+Сделал вручную файл с хостами.
+
+~~~
+
+cat ~/diplom/k8s/kubespray/inventory/mycluster/inventory.ini
+# ## Configure 'ip' variable to bind kubernetes services on a
+# ## different ip than the default iface
+# ## We should set etcd_member_name for etcd cluster. The node that is not a etcd member do not need to set the value, or can set the empty string value.
+[all]
+
+node0 ansible_host=158.160.97.147 ansible_user=ubuntu
+node1 ansible_host=178.154.202.124 ansible_user=ubuntu
+node2 ansible_host=178.154.207.17 ansible_user=ubuntu
+
+# ## configure a bastion host if your nodes are not directly reachable
+# [bastion]
+# bastion ansible_host=x.x.x.x ansible_user=some_user
+
+[kube_control_plane]
+# node0
+
+[etcd]
+# node0
+
+[kube_node]
+# node1
+# node2
+
+[calico_rr]
+
+[k8s_cluster:children]
+kube_control_plane
+kube_node
+calico_rr
+
+
+~~~
+
+
+Запустил playbook
+
+
+~~~
+ansible-playbook -i inventory/mycluster/inventory.ini cluster.yml 
+~~~
