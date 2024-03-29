@@ -353,5 +353,5 @@ calico_rr
 
 
 ~~~
-ansible-playbook -i inventory/mycluster/inventory.ini cluster.yml 
+ansible-playbook -i inventory/mycluster/hosts.yaml cluster.yml -b -v
 ~~~
