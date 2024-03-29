@@ -251,6 +251,65 @@ sudo pip3.10 install -r requirements.txt
  sudo cp -rfp inventory/sample inventory/mycluster
 ~~~
 
+Задекларировал IP
+
+~~~
+declare -a IPS=(10.1.2.15 10.1.2.19 10.1.2.5 10.1.2.29 10.1.2.18)
+
+~~~
+
+Сделал конфиг hosts.yaml
+
+~~~
+CONFIG_FILE=inventory/mycluster/hosts.yaml python3.10 contrib/inventory_builder/inventory.py ${IPS[@]}
+
+
+~~~
+
+Пример файла ( user д.б. !)
+
+
+
+~~~
+root@debianv:~/diplom/k8s/kubespray# cat inventory/mycluster/hosts.yaml cluster.yml
+all:
+  hosts:
+    node1:
+      ansible_host: 178.154.222.252
+      ip: 178.154.222.252
+      access_ip: 178.154.222.252
+      ansible_user: yc-user  
+    node2:
+      ansible_host: 178.154.226.190
+      ip: 178.154.226.190
+      access_ip: 178.154.226.190
+      ansible_user: yc-user  
+    node3:
+      ansible_host: 178.154.226.36
+      ip: 178.154.226.36
+      access_ip: 178.154.226.36
+      ansible_user: yc-user  
+  children:
+    kube_control_plane:
+      hosts:
+        node1:
+    kube_node:
+      hosts:
+        node2:
+        node3:
+    etcd:
+      hosts:
+        node1:
+    k8s_cluster:
+      children:
+        kube_control_plane:
+        kube_node:
+    calico_rr:
+      hosts: {}
+
+~~~
+
+
 Сделал вручную файл с хостами.
 
 ~~~
