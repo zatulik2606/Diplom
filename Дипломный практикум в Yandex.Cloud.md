@@ -392,3 +392,56 @@ yc-user@node1:~$ sudo kubectl create deploy nginx --image=nginx:latest --replica
 deployment.apps/nginx created
 
 ~~~
+Проверяем конфиги для доступа
+
+<details>
+yc-user@node1:~$ cat ~/.kube/config
+apiVersion: v1
+clusters:
+- cluster:
+    certificate-authority-data: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURCVENDQWUyZ0F3SUJBZ0lJUlJJZVZGSlFKYmN3RFFZSktvWklodmNOQVFFTEJRQXdGVEVUTUJFR0ExVUUKQXhNS2EzVmlaWEp1WlhSbGN6QWVGdzB5TkRBek1qa3hOREF5TXpWYUZ3MHpOREF6TWpjeE5EQTNNelZhTUJVeApFekFSQmdOVkJBTVRDbXQxWW1WeWJtVjBaWE13Z2dFaU1BMEdDU3FHU0liM0RRRUJBUVVBQTRJQkR3QXdnZ0VLCkFvSUJBUURKRWo1ZVBBVSs1QU91N205UXJlMHMvNm45NkhaWGptU0ZFWW5jdjVCN2lwZUpHSFExMEp4c2JWeHgKRmpRN0ZHU1FaUm5UNmx2TVB1VkpQcm5wZXkwT0xHei9KZXR1UmlKZFNQSXZwYm1WbW9HT0F1cUxTQVp2Wml3VApocVQ2Z2dMZ1IzK0lYV00rUkpQdEpRdm1WWGRtNnVvS1BCVGJpZFhwblM2MUIxTm9ySDBxcy9nNmRGekI5OUFTCjJmcHZhb0VHNytQWXY1VWJ4eCtFRm5EejBmNTEzd3NHVmpiOTFUQ1JzbG1NQVBvaEZYUTZtV3ZUT08yN2o1ZG4KQk9tMVJsbUFuaEhoaksyNDgvaFBEMFk1Y3NETDhQZ1NoN3Zpc0xYWDJDU29abHB2Y2JhWG1MOE1aT1U0K1dlawpGNXBLWlZOUUw4TE1ZT0p5dVFjZkl6L1EzNS9qQWdNQkFBR2pXVEJYTUE0R0ExVWREd0VCL3dRRUF3SUNwREFQCkJnTlZIUk1CQWY4RUJUQURBUUgvTUIwR0ExVWREZ1FXQkJSa002TWNjcHEyN0hrWkRJUkxoZFBOams3a1BqQVYKQmdOVkhSRUVEakFNZ2dwcmRXSmxjbTVsZEdWek1BMEdDU3FHU0liM0RRRUJDd1VBQTRJQkFRREFxS2Z5MHBtSQphUDNSM1pBMlhlbnpnV3JXVy9HTzdYR0FyNVhsYjloRFBhZjk5dGNNT3ZZaGhWQ01TLzhSTVhwUGRvUUpLTUhDCkI4Z1BEclVBNEo0WG5iVTl4RHZzakdrbUM0aTgydFJHTi9id2puUTNCcVd6UWZrK29PZFpEN0NXZWN5WXBQOW8KVlNmMFV1N3pneUJXcGNZNjBuamNEcVRoUFVmVnlkaDZFem5QWTl5MkNiOUVUUU5UYkpqTDdRcU5tU21XcUo3NwovbU5DM0JrVGlmWlI4Q0FjL0cvWFY3eVhQZWtRb1FvckNkMm1yMzlmRFA1ODF3SWczMWEzQXZEM1Z4QXZBelR1CkZwanV4VGR0bkVHSE10TVE5S0szNDFrUkU0eGlVcWt5SHQ5aVhVbStEVzVlRDYyeTk4RWtNQzhGT29zeVRMNm0Kcng2d25qOVY1UEZoCi0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K
+    server: https://127.0.0.1:6443
+  name: cluster.local
+contexts:
+- context:
+    cluster: cluster.local
+    user: kubernetes-admin
+  name: kubernetes-admin@cluster.local
+current-context: kubernetes-admin@cluster.local
+kind: Config
+preferences: {}
+users:
+- name: kubernetes-admin
+  user:
+    client-certificate-data: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURLVENDQWhHZ0F3SUJBZ0lJVVRVcm93dERwSU13RFFZSktvWklodmNOQVFFTEJRQXdGVEVUTUJFR0ExVUUKQXhNS2EzVmlaWEp1WlhSbGN6QWVGdzB5TkRBek1qa3hOREF5TXpWYUZ3MHlOVEF6TWpreE5EQTNNelphTUR3eApIekFkQmdOVkJBb1RGbXQxWW1WaFpHMDZZMngxYzNSbGNpMWhaRzFwYm5NeEdUQVhCZ05WQkFNVEVHdDFZbVZ5CmJtVjBaWE10WVdSdGFXNHdnZ0VpTUEwR0NTcUdTSWIzRFFFQkFRVUFBNElCRHdBd2dnRUtBb0lCQVFEQlhnWjYKZWVxd3hwbXVDYlJvZ3dNWVpFMFNVZFhxL21aMVJCa25naTZlUlFvMDdjRnRUTTNTNVlvZHcyOE5ZTGVNL0tCZApHd1hub2JaK3BQRWx4TGkwNzhDMTJOOHlEanpLSG9PV2NidmpYTnRMUk5TbDZuVEtvWXAwMTluVG1Qa1lYRUhHCmticGtBMnA0cEFHTFRiRVNzd2k5SlhMTjF3QzdORjdmTGM3TWk1MzlRbFY3SnJid21WdzhoZ0NYUWUxaDdsL1UKMWtoa2JELzFOUkpxRjdWT0c5TFM5UnhVVE5OWXk3SC9GWWloendhb2lZdWY4N0VPZ0g0Snc5dTZITDF5ZXN3eQp3NXRGQ0x0VGk5aGxzUUdmbUN1MEJmdmxiK205NVFPU0U4T0M3NVBpY0NRUmdHd1VzSDB0dXhEZnFZWFpaMUkyCkk2RzNNL2NyM1UvbUhYNU5BZ01CQUFHalZqQlVNQTRHQTFVZER3RUIvd1FFQXdJRm9EQVRCZ05WSFNVRUREQUsKQmdnckJnRUZCUWNEQWpBTUJnTlZIUk1CQWY4RUFqQUFNQjhHQTFVZEl3UVlNQmFBRkdRem94eHltcmJzZVJrTQpoRXVGMDgyT1R1UStNQTBHQ1NxR1NJYjNEUUVCQ3dVQUE0SUJBUUF5RnQvNVlkbHFPYXRHSnRYWkF2elFrVi9oCkFQZ24wYUU1Z01VbnBuWkF4bEs0UjNxRW4ySE5yd1JOSlZiYUVOdW0xNDI0cm5QeTI3Q2JuSVMzN2hMbEhRdTMKNFpqWnd3SGQrNzFTVHZ6aWRQYkt4SGZwYjVuZ2ZJRXlhcVJpSjF5Q0F3ZFZrdHJEYjVGWDI5OXpRRGZVcHVKawoyVkRuWVdVYktIVUJmcnIxQlBzUEtCTTV1VHRzcHYyMnpBV2ZOVGk4cXFGMmtxdVhKQmlZRUNZQWh5TFM4T0NRClZrM3k3Ky96VnFJRjg4YXhtLzNUb0ZzaXJSRHdFOWYxY0k0Z0VxV2hDOEkzYkRsT1FOdjNWTU8rTzc4TENPbDAKaU1zWlRkaWJodUdncG1qTHFzcVdMbVEyUFh5WVVkWStaZ0l1SldyQ3UzMkp3K2pSZ2JFcEwvZ3RUcERkCi0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K
+    client-key-data: LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlFb3dJQkFBS0NBUUVBd1Y0R2VubnFzTWFacmdtMGFJTURHR1JORWxIVjZ2NW1kVVFaSjRJdW5rVUtOTzNCCmJVek4wdVdLSGNOdkRXQzNqUHlnWFJzRjU2RzJmcVR4SmNTNHRPL0F0ZGpmTWc0OHloNkRsbkc3NDF6YlMwVFUKcGVwMHlxR0tkTmZaMDVqNUdGeEJ4cEc2WkFOcWVLUUJpMDJ4RXJNSXZTVnl6ZGNBdXpSZTN5M096SXVkL1VKVgpleWEyOEpsY1BJWUFsMEh0WWU1ZjFOWklaR3cvOVRVU2FoZTFUaHZTMHZVY1ZFelRXTXV4L3hXSW9jOEdxSW1MCm4vT3hEb0IrQ2NQYnVoeTljbnJNTXNPYlJRaTdVNHZZWmJFQm41Z3J0QVg3NVcvcHZlVURraFBEZ3UrVDRuQWsKRVlCc0ZMQjlMYnNRMzZtRjJXZFNOaU9odHpQM0s5MVA1aDErVFFJREFRQUJBb0lCQUMrc25QQkphc0dXMVlFQgpSNGVVOVlob0FsQ0grTFB0Y1Jsc1pyOUU2M1YrRkJ3a21sSDJZN0NoZzBIL1V6djdJb1lTS3YrSmtCVWgyN3F4CnMvcloyNmhRakRUSmVZMy8wS0VNa09qZ3RiQkN6cFpxSy91VUtLTmszSndlTThobHFOU0d1bmpZcVJuTGRjNjAKc09URmpPak5WMVE3RFdrT24xR0lnZk9JZWJvWUxHZnIvZk5HU2w1QkErVDQvWHpPdFlCY1U5TnRaTUt0ZGlhRQpSYnBKMWE5SjJiWFBkWTQzSlBBRjlpeWU3a05nM0tMVkxTYVAxMURYWEt2VzE4YlA2ejFJMVgwemFGbHRYUlB6Ckg4b1F3bEc4RjNzSEpSaGJQbnBPejdNVmFxdDJOamZLcDhYUWtlZGdXeUZMcmlUS25ZVlhXYTRnSHdDdzAyakwKcnRSN0JNa0NnWUVBNDh0YzlTTUtTOWkrVUhORlphM3dtTzYvZUhONnF2TFpxUUdYZENmSy93Smg2aUhqM2tRVgo0VXJOc0ZhdkV0T1ZyZlk0OGJIcjY4blRqTm5iNU5uVUIyTDdkdkwxZXZzUEdsM29naEZ6T3BlRXc0NGlSOXFlCkdrSmg3MUlUTngyV1RwWUtnNytKYXpLV3BVMEMvVmJDaElQQzFQbFF4eTg4dWJpb0VEV1VjNk1DZ1lFQTJVOWoKNzhXRjBMUitwT1g2Z1lpQ3NZZVhxSXgyOVQ5WVZlNFlidmtUNWNibXV2ajZnRXRsSUlWb0Yzc2lNVEszdHVBYgpET1VNRlB0dm1va2M2Mmt0VlN5TnBMQXZZWVQ3SkVnZHg4QUFHN2tySHdjMDJoczZaWGJ0dk52U1VpUWZha2IyCjh6empOQmNrR2hQaGdBNDZ4K3NRcHhyRFgxbThya01XOWp4LzVVOENnWUVBclo3UDBDdVA2blZkd1BYSzNBL3kKUks0Y0U5TjRtSmtXbXdFU2piN1Nzd0QrM2pSTWVKbE9UL1B5eUVlWmt2RGZzY0xzYmhOZExNOGN4Y3M3RmJlTgpLc0FmeCs2d2ViYW5NVUtJTjdMVEw4SlN0N1k2bktlZFA0aC9HcWhrNnVwTEtNU2xhUHR3NHRxaEJZYW9FNjJ2Ci9zNXFqbWNrVVZ6SW5RbUlWeXB2WnA4Q2dZQjJBNVpyVldLNWwvd2JBMFpLNkY3Sm1MQjArV3QwL3FTemJlMVkKL3UyZVlLbFhLdlduak1wcm9lZUlzUGM5cnFSMHJUb2pnNVJQSk1sVUxGaEhSRVE1T0V2bi8wS0wvRk1EUGlMbQpJdEFzUGlBNzVvYitWOEViN3oxbXpoNW5PM1RRRzUvck1zclV0Q2lIL1BuK3VEdVY3SU9Mckk0amp6RlhsZG0zCmVkMmZJd0tCZ0ZoSUQzNm5ESzd0QitTcGcxN0NGODRHVEZicURKUkNoZ0l6MkZuOVVlaVhWMVhUa0dzQ29ncDIKb1lNeitDZlJaeTVMVHdpMlBKK2liUEZYQWxmR1hBZGc5NmJTS0pYUm5PaDlVZWxVNGtTRmNyY3FCMkxBY2FObQpLb01VWVNDdjllUTR0S1dTRHJhR0JWS3VHdjVIS0VURWZiTndkZUVid1VsY0dEQWIwTFBrCi0tLS0tRU5EIFJTQSBQUklWQVRFIEtFWS0tLS0tCg==
+</details>
+
+
+Проверяю pods.
+
+~~~
+yc-user@node1:~$ sudo kubectl get pods --all-namespaces
+NAMESPACE     NAME                                       READY   STATUS    RESTARTS   AGE
+default       nginx-56fcf95486-g5rgm                     1/1     Running   0          3m39s
+default       nginx-56fcf95486-rn4sc                     1/1     Running   0          3m39s
+kube-system   calico-kube-controllers-6c7b7dc5d8-snwfw   1/1     Running   0          20m
+kube-system   calico-node-72k6m                          1/1     Running   0          21m
+kube-system   calico-node-l6tmj                          1/1     Running   0          21m
+kube-system   calico-node-w9qpw                          1/1     Running   0          21m
+kube-system   coredns-69db55dd76-7kz7g                   1/1     Running   0          20m
+kube-system   coredns-69db55dd76-r5bk2                   1/1     Running   0          20m
+kube-system   dns-autoscaler-6f4b597d8c-tcljb            1/1     Running   0          20m
+kube-system   kube-apiserver-node1                       1/1     Running   1          23m
+kube-system   kube-controller-manager-node1              1/1     Running   2          23m
+kube-system   kube-proxy-hkthz                           1/1     Running   0          22m
+kube-system   kube-proxy-hpggq                           1/1     Running   0          22m
+kube-system   kube-proxy-jcgx9                           1/1     Running   0          22m
+kube-system   kube-scheduler-node1                       1/1     Running   1          23m
+kube-system   nginx-proxy-node2                          1/1     Running   0          22m
+kube-system   nginx-proxy-node3                          1/1     Running   0          22m
+kube-system   nodelocaldns-8wvtm                         1/1     Running   0          20m
+kube-system   nodelocaldns-97nxj                         1/1     Running   0          20m
+kube-system   nodelocaldns-rbf9s                         1/1     Running   0          20m
+
+~~~
