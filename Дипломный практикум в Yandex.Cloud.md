@@ -203,12 +203,6 @@ yc vpc network create  --name net --labels my-label=netology --description "net 
 
  ~~~
 
-Скачиваем kubespray
-
-~~~
-git clone https://github.com/kubernetes-sigs/kubespray
-~~~
-
 
 Проверяем подключение 
 
@@ -239,3 +233,13 @@ Warning: Permanently added '158.160.0.65' (ECDSA) to the list of known hosts.
 Welcome to Ubuntu 20.04.6 LTS (GNU/Linux 5.4.0-152-generic x86_64)
 
 ~~~
+
+
+Скачиваем kubespray на локальную машину
+
+~~~
+git clone https://github.com/kubernetes-sigs/kubespray
+~~~
+
+
+
