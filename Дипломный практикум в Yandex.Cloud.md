@@ -359,3 +359,36 @@ calico_rr
 ~~~
 ansible-playbook -i inventory/mycluster/hosts.yaml cluster.yml -b -v
 ~~~
+
+
+Заходим на первую ВМ и проверим версию kube
+
+~~~
+yc-user@node1:~$ sudo kubectl version
+Client Version: v1.29.3
+Kustomize Version: v5.0.4-0.20230601165947-6ce0bf390ce3
+Server Version: v1.29.3
+~~~
+
+Проверяем ноды (если возникает ошибка с портом  ,то 
+mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+)
+
+~~~
+yc-user@node1:~$ sudo kubectl get nodes
+NAME    STATUS   ROLES           AGE   VERSION
+node1   Ready    control-plane   17m   v1.29.3
+node2   Ready    <none>          16m   v1.29.3
+node3   Ready    <none>          16m   v1.29.3
+
+~~~
+
+Сделал пробные конфиги.
+
+~~~
+yc-user@node1:~$ sudo kubectl create deploy nginx --image=nginx:latest --replicas=2
+deployment.apps/nginx created
+
+~~~
