@@ -266,29 +266,32 @@ CONFIG_FILE=inventory/mycluster/hosts.yaml python3.10 contrib/inventory_builder/
 
 ~~~
 
-Пример файла ( user д.б. !)
+Пример файла ( user и ssh д.б. !)
 
 
 
 ~~~
-root@debianv:~/diplom/k8s/kubespray# cat inventory/mycluster/hosts.yaml cluster.yml
+root@debianv:~/diplom/k8s/kubespray# cat ~/diplom/k8s/kubespray/inventory/mycluster/hosts.yaml
 all:
   hosts:
     node1:
       ansible_host: 178.154.222.252
-      ip: 178.154.222.252
-      access_ip: 178.154.222.252
-      ansible_user: yc-user  
+        #ip: 178.154.222.252
+        #access_ip: 178.154.222.252
+      ansible_user: yc-user
+      ansible_ssh_private_key_file: ~/.ssh/id_rsa.pub  
     node2:
       ansible_host: 178.154.226.190
-      ip: 178.154.226.190
-      access_ip: 178.154.226.190
-      ansible_user: yc-user  
+        #ip: 178.154.226.190
+        #access_ip: 178.154.226.190
+      ansible_user: yc-user
+      ansible_ssh_private_key_file: ~/.ssh/ida_rsa.pub  
     node3:
       ansible_host: 178.154.226.36
-      ip: 178.154.226.36
-      access_ip: 178.154.226.36
-      ansible_user: yc-user  
+        #ip: 178.154.226.36
+        #access_ip: 178.154.226.36
+      ansible_user: yc-user
+      ansible_ssh_private_key_file: ~/.ssh/id_rsa.pub  
   children:
     kube_control_plane:
       hosts:
@@ -306,6 +309,7 @@ all:
         kube_node:
     calico_rr:
       hosts: {}
+
 
 ~~~
 
