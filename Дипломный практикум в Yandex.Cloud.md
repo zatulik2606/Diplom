@@ -240,6 +240,10 @@ git clone https://github.com/kubernetes-sigs/kubespray
 sudo pip3.10 install -r requirements.txt
 ~~~
 
+Если зависимости не установились ,то необходимо обновить версию python.
+
+[Как обновить на 3.10 пример](https://www.rosehosting.com/blog/how-to-install-python-3-10-on-debian-11/) 
+
 
 Скачиваем инвенторку.
 
