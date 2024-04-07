@@ -150,41 +150,43 @@
 
 ### Создание облачной инфраструктуры
 
-Проверил какие серисные аккаунты есть.
 
-~~~
-root@debianv:~/diplom/bucket# yc iam service-account --folder-id b1gleu995pjjtd5eficp list 
-+----------------------+---------------+
-|          ID          |     NAME      |
-+----------------------+---------------+
-| ajeb0pd4cnmcmpt367nu | zatulik       |
-| ajeduaf1a1gs4lu0uh71 | ezatulivetrov |
-+----------------------+---------------+
+Конфигурация находится в папке [bucket](https://github.com/zatulik2606/Diplom/tree/main/bucket)
 
-~~~
-Создал ключ
 
-~~~
-root@debianv:~/diplom/bucket# yc iam key create --service-account-name zatulik --output key.json --folder-id b1gleu995pjjtd5eficp
-id: aje53eefdpcsqakfom7a
-service_account_id: ajeb0pd4cnmcmpt367nu
-created_at: "2024-03-27T10:21:38.452079030Z"
-key_algorithm: RSA_2048
+
+
+terraform apply проходит без ошибок
 
 ~~~
 
 
-Проверил ключ.
 
 ~~~
-root@debianv:~/diplom/bucket# yc iam key create --service-account-name zatulik --output key.json --folder-id b1gleu995pjjtd5eficp
-id: aje53eefdpcsqakfom7a
-service_account_id: ajeb0pd4cnmcmpt367nu
-created_at: "2024-03-27T10:21:38.452079030Z"
-key_algorithm: RSA_2048
 
-......
+terraform destroy проходит без ошибок
+
+
 ~~~
+
+~~~
+
+
+VM 
+
+
+~~~
+
+~~~
+
+VPC 
+
+
+~~~
+
+~~~
+
+Bucket
 
 ### Создание Kubernetes кластера
 
