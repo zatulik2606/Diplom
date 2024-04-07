@@ -372,3 +372,13 @@ kube-system   nodelocaldns-vsvck                         1/1     Running   0    
 
 
 ~~~
+## Создание тестового приложения
+
+
+
+[Ссылка на приложение git](https://github.com/zatulik2606/myapp)
+
+[Ссылка на Dockerfile](https://github.com/zatulik2606/myapp/blob/main/Dockerfile)
+
+
+
