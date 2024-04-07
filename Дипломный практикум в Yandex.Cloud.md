@@ -156,21 +156,6 @@
 
 
 
-terraform apply проходит без ошибок
-
-~~~
-
-
-
-~~~
-
-terraform destroy проходит без ошибок
-
-
-~~~
-
-~~~
-
 
 VM 
 
@@ -188,46 +173,14 @@ VPC
 
 Bucket
 
+~~~
+~~~
+
 ### Создание Kubernetes кластера
 
 
 
- VM создались.
 
- ~~~
-
- ~~~
-
-
-Проверяем подключение 
-
-~~~
-ssh ubuntu@178.154.223.233
-~~~
-
-Добавляем на первую VM ключ от локальной для последующей авторизации( если надо - потом проверишь)
-
-~~~
-vim key 
-~~~
-
-В этот файл добавишь cat ~/.ssh/id_rsa
-
-
-Потомо обязательно! сделать chmod 0600 key
-
-
-Далее  ssh ipVM -i key и заходишь на др VM
-
-~~~
-ubuntu@node-0:~$ ssh 158.160.0.65 -i key
-The authenticity of host '158.160.0.65 (158.160.0.65)' can't be established.
-ECDSA key fingerprint is SHA256:tA+dbxcuy2QQmTxGODKQ/8r2xTFXksYFMeDglA6REXM.
-Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
-Warning: Permanently added '158.160.0.65' (ECDSA) to the list of known hosts.
-Welcome to Ubuntu 20.04.6 LTS (GNU/Linux 5.4.0-152-generic x86_64)
-
-~~~
 
 
 Скачиваем kubespray на локальную машину
