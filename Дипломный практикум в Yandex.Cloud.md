@@ -209,7 +209,7 @@ sudo pip3.10 install -r requirements.txt
 Задекларировал IP
 
 ~~~
-declare -a IPS=(158.160.110.70 51.250.24.53 158.160.157.110)
+declare -a IPS=(158.160.51.19 51.250.104.61 158.160.161.114)
 
 ~~~
 
@@ -229,36 +229,32 @@ CONFIG_FILE=inventory/mycluster/hosts.yaml python3.10 contrib/inventory_builder/
 root@debianv:~/diplom/k8s/kubespray# cat ~/diplom/k8s/kubespray/inventory/mycluster/hosts.yaml
 all:
   hosts:
+    node0:
+      ansible_host: 158.160.51.19
+        #ip: 158.160.51.19
+        #access_ip: 158.160.51.19
+      ansible_user: ubuntu  
     node1:
-      ansible_host: 62.84.118.139
-        #ip: 62.84.118.139
-        #access_ip: 62.84.118.139
+      ansible_host: 51.250.104.61
+        #ip: 51.250.104.61
+        #access_ip: 51.250.104.61
       ansible_user: ubuntu
-      ansible_ssh_private_key_file: ~/.ssh/id_rsa   
-
     node2:
-      ansible_host: 158.160.81.15
-        #ip: 158.160.81.15
-        #access_ip: 158.160.81.15
+      ansible_host: 158.160.161.114
+        #ip: 158.160.161.114
+        #access_ip: 158.160.161.114
       ansible_user: ubuntu
-      ansible_ssh_private_key_file: ~/.ssh/id_rsa  
-    node3:
-      ansible_host: 158.160.152.69
-        #ip: 158.160.152.69
-        #access_ip: 158.160.152.69
-      ansible_user: ubuntu
-      ansible_ssh_private_key_file: ~/.ssh/id_rsa  
   children:
     kube_control_plane:
       hosts:
-        node1:
+        nodi0:
     kube_node:
       hosts:
+        node1:
         node2:
-        node3:
     etcd:
       hosts:
-        node1:
+        node0:
     k8s_cluster:
       children:
         kube_control_plane:
@@ -266,10 +262,15 @@ all:
     calico_rr:
       hosts: {}
 
-
 ~~~
 
 
+Указал IP для внешнего подключения ( это ip control plane)
+~~~
+root@debianv:~/diplom/k8s/kubespray# cat /root/diplom/k8s/kubespray/inventory/mycluster/group_vars/k8s_cluster/k8s-cluster.yml | grep suppl
+supplementary_addresses_in_ssl_keys: [158.160.51.19]
+
+~~~
 
 
 
