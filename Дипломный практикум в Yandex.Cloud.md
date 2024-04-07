@@ -256,7 +256,7 @@ sudo pip3.10 install -r requirements.txt
 Задекларировал IP
 
 ~~~
-declare -a IPS=(178.154.202.215 158.160.84.126 158.160.158.110)
+declare -a IPS=(62.84.118.139 158.160.81.15 158.160.152.69)
 
 ~~~
 
@@ -277,22 +277,22 @@ root@debianv:~/diplom/k8s/kubespray# cat ~/diplom/k8s/kubespray/inventory/myclus
 all:
   hosts:
     node1:
-      ansible_host: 178.154.202.215
-        #ip: 178.154.202.215
-        #access_ip: 178.154.202.215
+      ansible_host: 62.84.118.139
+        #ip: 62.84.118.139
+        #access_ip: 62.84.118.139
       ansible_user: ubuntu
       ansible_ssh_private_key_file: ~/.ssh/id_rsa   
 
     node2:
-      ansible_host: 158.160.84.126
-        #ip: 158.160.84.126
-        #access_ip: 158.160.84.126i
+      ansible_host: 158.160.81.15
+        #ip: 158.160.81.15
+        #access_ip: 158.160.81.15
       ansible_user: ubuntu
       ansible_ssh_private_key_file: ~/.ssh/id_rsa  
     node3:
-      ansible_host: 158.160.158.110
-        #ip: 158.160.158.110
-        #access_ip: 158.160.158.110
+      ansible_host: 158.160.152.69
+        #ip: 158.160.152.69
+        #access_ip: 158.160.152.69
       ansible_user: ubuntu
       ansible_ssh_private_key_file: ~/.ssh/id_rsa  
   children:
