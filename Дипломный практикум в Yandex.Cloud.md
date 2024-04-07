@@ -285,10 +285,11 @@ ansible-playbook -i inventory/mycluster/hosts.yaml cluster.yml -b -v
 Заходим на первую ВМ и проверим версию kube
 
 ~~~
-ubuntu@node1:~$  sudo kubectl version
+ubuntu@node0:~$ sudo kubectl version
 Client Version: v1.29.3
 Kustomize Version: v5.0.4-0.20230601165947-6ce0bf390ce3
 Server Version: v1.29.3
+
 
 ~~~
 
@@ -304,66 +305,28 @@ sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
 ~~~
 
-ubuntu@node1:~$ sudo kubectl get nodes
-NAME    STATUS   ROLES           AGE   VERSION
-node1   Ready    control-plane   10m   v1.29.3
-node2   Ready    <none>          10m   v1.29.3
-node3   Ready    <none>          10m   v1.29.3
+ubuntu@node0:~$ sudo kubectl get nodes
+NAME    STATUS   ROLES           AGE     VERSION
+node0   Ready    control-plane   6m3s    v1.29.3
+node1   Ready    <none>          5m12s   v1.29.3
+node2   Ready    <none>          5m14s   v1.29.3
+
 
 ~~~
 
 Смотрим Kubernetes кластер
 
 ~~~
-ubuntu@node1:~$  kubectl get all --all-namespaces
-NAMESPACE     NAME                                           READY   STATUS    RESTARTS   AGE
-kube-system   pod/calico-kube-controllers-6c7b7dc5d8-phjxh   1/1     Running   0          8m55s
-kube-system   pod/calico-node-bbjt9                          1/1     Running   0          9m39s
-kube-system   pod/calico-node-bwtcc                          1/1     Running   0          9m39s
-kube-system   pod/calico-node-d858r                          1/1     Running   0          9m39s
-kube-system   pod/coredns-69db55dd76-7mjql                   1/1     Running   0          8m26s
-kube-system   pod/coredns-69db55dd76-cq757                   1/1     Running   0          8m21s
-kube-system   pod/dns-autoscaler-6f4b597d8c-4px7w            1/1     Running   0          8m23s
-kube-system   pod/kube-apiserver-node1                       1/1     Running   1          11m
-kube-system   pod/kube-controller-manager-node1              1/1     Running   2          11m
-kube-system   pod/kube-proxy-djw7n                           1/1     Running   0          10m
-kube-system   pod/kube-proxy-hvr6n                           1/1     Running   0          10m
-kube-system   pod/kube-proxy-mw7c5                           1/1     Running   0          10m
-kube-system   pod/kube-scheduler-node1                       1/1     Running   1          11m
-kube-system   pod/nginx-proxy-node2                          1/1     Running   0          10m
-kube-system   pod/nginx-proxy-node3                          1/1     Running   0          10m
-kube-system   pod/nodelocaldns-bgx56                         1/1     Running   0          8m22s
-kube-system   pod/nodelocaldns-qkfpr                         1/1     Running   0          8m22s
-kube-system   pod/nodelocaldns-rcv6c                         1/1     Running   0          8m22s
-
-NAMESPACE     NAME                 TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)                  AGE
-default       service/kubernetes   ClusterIP   10.233.0.1   <none>        443/TCP                  11m
-kube-system   service/coredns      ClusterIP   10.233.0.3   <none>        53/UDP,53/TCP,9153/TCP   8m26s
-
-NAMESPACE     NAME                          DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR            AGE
-kube-system   daemonset.apps/calico-node    3         3         3       3            3           kubernetes.io/os=linux   9m40s
-kube-system   daemonset.apps/kube-proxy     3         3         3       3            3           kubernetes.io/os=linux   11m
-kube-system   daemonset.apps/nodelocaldns   3         3         3       3            3           kubernetes.io/os=linux   8m22s
-
-NAMESPACE     NAME                                      READY   UP-TO-DATE   AVAILABLE   AGE
-kube-system   deployment.apps/calico-kube-controllers   1/1     1            1           8m56s
-kube-system   deployment.apps/coredns                   2/2     2            2           8m27s
-kube-system   deployment.apps/dns-autoscaler            1/1     1            1           8m25s
-
-NAMESPACE     NAME                                                 DESIRED   CURRENT   READY   AGE
-kube-system   replicaset.apps/calico-kube-controllers-6c7b7dc5d8   1         1         1       8m56s
-kube-system   replicaset.apps/coredns-69db55dd76                   2         2         2       8m27s
-kube-system   replicaset.apps/dns-autoscaler-6f4b597d8c            1         1         1       8m25s
 
 ~~~
 Проверяем конфиги для доступа
 
 <details>
-yc-user@node1:~$ cat ~/.kube/config
+ubuntu@node0:~$ cat ~/.kube/config
 apiVersion: v1
 clusters:
 - cluster:
-    certificate-authority-data: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURCVENDQWUyZ0F3SUJBZ0lJUlJJZVZGSlFKYmN3RFFZSktvWklodmNOQVFFTEJRQXdGVEVUTUJFR0ExVUUKQXhNS2EzVmlaWEp1WlhSbGN6QWVGdzB5TkRBek1qa3hOREF5TXpWYUZ3MHpOREF6TWpjeE5EQTNNelZhTUJVeApFekFSQmdOVkJBTVRDbXQxWW1WeWJtVjBaWE13Z2dFaU1BMEdDU3FHU0liM0RRRUJBUVVBQTRJQkR3QXdnZ0VLCkFvSUJBUURKRWo1ZVBBVSs1QU91N205UXJlMHMvNm45NkhaWGptU0ZFWW5jdjVCN2lwZUpHSFExMEp4c2JWeHgKRmpRN0ZHU1FaUm5UNmx2TVB1VkpQcm5wZXkwT0xHei9KZXR1UmlKZFNQSXZwYm1WbW9HT0F1cUxTQVp2Wml3VApocVQ2Z2dMZ1IzK0lYV00rUkpQdEpRdm1WWGRtNnVvS1BCVGJpZFhwblM2MUIxTm9ySDBxcy9nNmRGekI5OUFTCjJmcHZhb0VHNytQWXY1VWJ4eCtFRm5EejBmNTEzd3NHVmpiOTFUQ1JzbG1NQVBvaEZYUTZtV3ZUT08yN2o1ZG4KQk9tMVJsbUFuaEhoaksyNDgvaFBEMFk1Y3NETDhQZ1NoN3Zpc0xYWDJDU29abHB2Y2JhWG1MOE1aT1U0K1dlawpGNXBLWlZOUUw4TE1ZT0p5dVFjZkl6L1EzNS9qQWdNQkFBR2pXVEJYTUE0R0ExVWREd0VCL3dRRUF3SUNwREFQCkJnTlZIUk1CQWY4RUJUQURBUUgvTUIwR0ExVWREZ1FXQkJSa002TWNjcHEyN0hrWkRJUkxoZFBOams3a1BqQVYKQmdOVkhSRUVEakFNZ2dwcmRXSmxjbTVsZEdWek1BMEdDU3FHU0liM0RRRUJDd1VBQTRJQkFRREFxS2Z5MHBtSQphUDNSM1pBMlhlbnpnV3JXVy9HTzdYR0FyNVhsYjloRFBhZjk5dGNNT3ZZaGhWQ01TLzhSTVhwUGRvUUpLTUhDCkI4Z1BEclVBNEo0WG5iVTl4RHZzakdrbUM0aTgydFJHTi9id2puUTNCcVd6UWZrK29PZFpEN0NXZWN5WXBQOW8KVlNmMFV1N3pneUJXcGNZNjBuamNEcVRoUFVmVnlkaDZFem5QWTl5MkNiOUVUUU5UYkpqTDdRcU5tU21XcUo3NwovbU5DM0JrVGlmWlI4Q0FjL0cvWFY3eVhQZWtRb1FvckNkMm1yMzlmRFA1ODF3SWczMWEzQXZEM1Z4QXZBelR1CkZwanV4VGR0bkVHSE10TVE5S0szNDFrUkU0eGlVcWt5SHQ5aVhVbStEVzVlRDYyeTk4RWtNQzhGT29zeVRMNm0Kcng2d25qOVY1UEZoCi0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K
+    certificate-authority-data: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURCVENDQWUyZ0F3SUJBZ0lJTkJ0N0NTcFZMK2N3RFFZSktvWklodmNOQVFFTEJRQXdGVEVUTUJFR0ExVUUKQXhNS2EzVmlaWEp1WlhSbGN6QWVGdzB5TkRBME1EY3hOVEF3TWpCYUZ3MHpOREEwTURVeE5UQTFNakJhTUJVeApFekFSQmdOVkJBTVRDbXQxWW1WeWJtVjBaWE13Z2dFaU1BMEdDU3FHU0liM0RRRUJBUVVBQTRJQkR3QXdnZ0VLCkFvSUJBUURqWmdsNXNQWVZZZ2lGZVJBcXNuMnBSaTVCRjlNMkVwWXJjM3pDTU9uM3BDWHBDZTE4bC9VcmE4Mk4KSVUyN3lUeTZ0bnJLOUNCV2FXQWwwWkRCMjNWdTlwTkdHRzNCdG1rNWFuZU1rMnh2L3B0RnVUYTQycm9UTS81UAp2TU00TWJtblBMMzhhaUpTVUQwdFppdkJQLzcrMmNlZEM1azFiVFAvd2g5NUVnL3dDTEFJbXpEcGJqYm1wRG0yCkVzRUJxeGNOa2FrdFI1SVBFbjIwSTdseTN5S1dsNWFsZXl0YVNSQ2ltT2dSNGhxOHJYbU1JR09BRUlJSlVEelAKTlNsdWtUQkQyR3grK3owdHR0TkVJcU5sTFEwQUNpMG56YTNCRDUzYTBwVzhtK3IxWkJONHlnOXlIWXc1andsbwozRjNIdGF6UEhCRFkxc3hhbk9tbnlSc3lMY3dQQWdNQkFBR2pXVEJYTUE0R0ExVWREd0VCL3dRRUF3SUNwREFQCkJnTlZIUk1CQWY4RUJUQURBUUgvTUIwR0ExVWREZ1FXQkJUNFJFYWJGb0dGUUNNREVTMVpjc2lpNlJyZlJEQVYKQmdOVkhSRUVEakFNZ2dwcmRXSmxjbTVsZEdWek1BMEdDU3FHU0liM0RRRUJDd1VBQTRJQkFRQlVXTDMzWnBkMQpTcXFJeDZoU1ljL3dpNllIVUhpOE9BajI2WWM0NytBaWZVM0dMUzNQOFQyNEptUk9mVW12VGdTMHlILzIzMm5uCnp4YXQwT054VEFXRXNMSDExbFdIL0k0QXREeHpqUEExOFdSbmdGL1pqWDJHM0djVExmc0cvTHExd0dLWEh5L1UKVzF4S2t4akg5OXZwbjZ0ekoyamoyQzlBeXlyeFJ3Sm56bjFiaVE4UG9IcHNZUkJxci8zZWxyT0VUVGM5TlBCRgo1ZEFTakZXRCtzbU9OZG15ZTdRL0pxd3FnNXBVblBsOFVhY2QrRE1oNnFGSXdPdVpWYVlhU2hyUnJ2SDN0akJnCk1GSURQdi9JODNZN3BWUEQ5RHB1WFkrY2pDekI0RXBrcEJzY1gra3JXck9GL1Z3NDNlQnBnekI3R2J2YXk0SG8KVFdneS9haE9LVktiCi0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K
     server: https://127.0.0.1:6443
   name: cluster.local
 contexts:
@@ -377,35 +340,35 @@ preferences: {}
 users:
 - name: kubernetes-admin
   user:
-    client-certificate-data: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURLVENDQWhHZ0F3SUJBZ0lJVVRVcm93dERwSU13RFFZSktvWklodmNOQVFFTEJRQXdGVEVUTUJFR0ExVUUKQXhNS2EzVmlaWEp1WlhSbGN6QWVGdzB5TkRBek1qa3hOREF5TXpWYUZ3MHlOVEF6TWpreE5EQTNNelphTUR3eApIekFkQmdOVkJBb1RGbXQxWW1WaFpHMDZZMngxYzNSbGNpMWhaRzFwYm5NeEdUQVhCZ05WQkFNVEVHdDFZbVZ5CmJtVjBaWE10WVdSdGFXNHdnZ0VpTUEwR0NTcUdTSWIzRFFFQkFRVUFBNElCRHdBd2dnRUtBb0lCQVFEQlhnWjYKZWVxd3hwbXVDYlJvZ3dNWVpFMFNVZFhxL21aMVJCa25naTZlUlFvMDdjRnRUTTNTNVlvZHcyOE5ZTGVNL0tCZApHd1hub2JaK3BQRWx4TGkwNzhDMTJOOHlEanpLSG9PV2NidmpYTnRMUk5TbDZuVEtvWXAwMTluVG1Qa1lYRUhHCmticGtBMnA0cEFHTFRiRVNzd2k5SlhMTjF3QzdORjdmTGM3TWk1MzlRbFY3SnJid21WdzhoZ0NYUWUxaDdsL1UKMWtoa2JELzFOUkpxRjdWT0c5TFM5UnhVVE5OWXk3SC9GWWloendhb2lZdWY4N0VPZ0g0Snc5dTZITDF5ZXN3eQp3NXRGQ0x0VGk5aGxzUUdmbUN1MEJmdmxiK205NVFPU0U4T0M3NVBpY0NRUmdHd1VzSDB0dXhEZnFZWFpaMUkyCkk2RzNNL2NyM1UvbUhYNU5BZ01CQUFHalZqQlVNQTRHQTFVZER3RUIvd1FFQXdJRm9EQVRCZ05WSFNVRUREQUsKQmdnckJnRUZCUWNEQWpBTUJnTlZIUk1CQWY4RUFqQUFNQjhHQTFVZEl3UVlNQmFBRkdRem94eHltcmJzZVJrTQpoRXVGMDgyT1R1UStNQTBHQ1NxR1NJYjNEUUVCQ3dVQUE0SUJBUUF5RnQvNVlkbHFPYXRHSnRYWkF2elFrVi9oCkFQZ24wYUU1Z01VbnBuWkF4bEs0UjNxRW4ySE5yd1JOSlZiYUVOdW0xNDI0cm5QeTI3Q2JuSVMzN2hMbEhRdTMKNFpqWnd3SGQrNzFTVHZ6aWRQYkt4SGZwYjVuZ2ZJRXlhcVJpSjF5Q0F3ZFZrdHJEYjVGWDI5OXpRRGZVcHVKawoyVkRuWVdVYktIVUJmcnIxQlBzUEtCTTV1VHRzcHYyMnpBV2ZOVGk4cXFGMmtxdVhKQmlZRUNZQWh5TFM4T0NRClZrM3k3Ky96VnFJRjg4YXhtLzNUb0ZzaXJSRHdFOWYxY0k0Z0VxV2hDOEkzYkRsT1FOdjNWTU8rTzc4TENPbDAKaU1zWlRkaWJodUdncG1qTHFzcVdMbVEyUFh5WVVkWStaZ0l1SldyQ3UzMkp3K2pSZ2JFcEwvZ3RUcERkCi0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K
-    client-key-data: LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlFb3dJQkFBS0NBUUVBd1Y0R2VubnFzTWFacmdtMGFJTURHR1JORWxIVjZ2NW1kVVFaSjRJdW5rVUtOTzNCCmJVek4wdVdLSGNOdkRXQzNqUHlnWFJzRjU2RzJmcVR4SmNTNHRPL0F0ZGpmTWc0OHloNkRsbkc3NDF6YlMwVFUKcGVwMHlxR0tkTmZaMDVqNUdGeEJ4cEc2WkFOcWVLUUJpMDJ4RXJNSXZTVnl6ZGNBdXpSZTN5M096SXVkL1VKVgpleWEyOEpsY1BJWUFsMEh0WWU1ZjFOWklaR3cvOVRVU2FoZTFUaHZTMHZVY1ZFelRXTXV4L3hXSW9jOEdxSW1MCm4vT3hEb0IrQ2NQYnVoeTljbnJNTXNPYlJRaTdVNHZZWmJFQm41Z3J0QVg3NVcvcHZlVURraFBEZ3UrVDRuQWsKRVlCc0ZMQjlMYnNRMzZtRjJXZFNOaU9odHpQM0s5MVA1aDErVFFJREFRQUJBb0lCQUMrc25QQkphc0dXMVlFQgpSNGVVOVlob0FsQ0grTFB0Y1Jsc1pyOUU2M1YrRkJ3a21sSDJZN0NoZzBIL1V6djdJb1lTS3YrSmtCVWgyN3F4CnMvcloyNmhRakRUSmVZMy8wS0VNa09qZ3RiQkN6cFpxSy91VUtLTmszSndlTThobHFOU0d1bmpZcVJuTGRjNjAKc09URmpPak5WMVE3RFdrT24xR0lnZk9JZWJvWUxHZnIvZk5HU2w1QkErVDQvWHpPdFlCY1U5TnRaTUt0ZGlhRQpSYnBKMWE5SjJiWFBkWTQzSlBBRjlpeWU3a05nM0tMVkxTYVAxMURYWEt2VzE4YlA2ejFJMVgwemFGbHRYUlB6Ckg4b1F3bEc4RjNzSEpSaGJQbnBPejdNVmFxdDJOamZLcDhYUWtlZGdXeUZMcmlUS25ZVlhXYTRnSHdDdzAyakwKcnRSN0JNa0NnWUVBNDh0YzlTTUtTOWkrVUhORlphM3dtTzYvZUhONnF2TFpxUUdYZENmSy93Smg2aUhqM2tRVgo0VXJOc0ZhdkV0T1ZyZlk0OGJIcjY4blRqTm5iNU5uVUIyTDdkdkwxZXZzUEdsM29naEZ6T3BlRXc0NGlSOXFlCkdrSmg3MUlUTngyV1RwWUtnNytKYXpLV3BVMEMvVmJDaElQQzFQbFF4eTg4dWJpb0VEV1VjNk1DZ1lFQTJVOWoKNzhXRjBMUitwT1g2Z1lpQ3NZZVhxSXgyOVQ5WVZlNFlidmtUNWNibXV2ajZnRXRsSUlWb0Yzc2lNVEszdHVBYgpET1VNRlB0dm1va2M2Mmt0VlN5TnBMQXZZWVQ3SkVnZHg4QUFHN2tySHdjMDJoczZaWGJ0dk52U1VpUWZha2IyCjh6empOQmNrR2hQaGdBNDZ4K3NRcHhyRFgxbThya01XOWp4LzVVOENnWUVBclo3UDBDdVA2blZkd1BYSzNBL3kKUks0Y0U5TjRtSmtXbXdFU2piN1Nzd0QrM2pSTWVKbE9UL1B5eUVlWmt2RGZzY0xzYmhOZExNOGN4Y3M3RmJlTgpLc0FmeCs2d2ViYW5NVUtJTjdMVEw4SlN0N1k2bktlZFA0aC9HcWhrNnVwTEtNU2xhUHR3NHRxaEJZYW9FNjJ2Ci9zNXFqbWNrVVZ6SW5RbUlWeXB2WnA4Q2dZQjJBNVpyVldLNWwvd2JBMFpLNkY3Sm1MQjArV3QwL3FTemJlMVkKL3UyZVlLbFhLdlduak1wcm9lZUlzUGM5cnFSMHJUb2pnNVJQSk1sVUxGaEhSRVE1T0V2bi8wS0wvRk1EUGlMbQpJdEFzUGlBNzVvYitWOEViN3oxbXpoNW5PM1RRRzUvck1zclV0Q2lIL1BuK3VEdVY3SU9Mckk0amp6RlhsZG0zCmVkMmZJd0tCZ0ZoSUQzNm5ESzd0QitTcGcxN0NGODRHVEZicURKUkNoZ0l6MkZuOVVlaVhWMVhUa0dzQ29ncDIKb1lNeitDZlJaeTVMVHdpMlBKK2liUEZYQWxmR1hBZGc5NmJTS0pYUm5PaDlVZWxVNGtTRmNyY3FCMkxBY2FObQpLb01VWVNDdjllUTR0S1dTRHJhR0JWS3VHdjVIS0VURWZiTndkZUVid1VsY0dEQWIwTFBrCi0tLS0tRU5EIFJTQSBQUklWQVRFIEtFWS0tLS0tCg==
+    client-certificate-data: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURLVENDQWhHZ0F3SUJBZ0lJSkRXeXlDTHhTVUl3RFFZSktvWklodmNOQVFFTEJRQXdGVEVUTUJFR0ExVUUKQXhNS2EzVmlaWEp1WlhSbGN6QWVGdzB5TkRBME1EY3hOVEF3TWpCYUZ3MHlOVEEwTURjeE5UQTFNakZhTUR3eApIekFkQmdOVkJBb1RGbXQxWW1WaFpHMDZZMngxYzNSbGNpMWhaRzFwYm5NeEdUQVhCZ05WQkFNVEVHdDFZbVZ5CmJtVjBaWE10WVdSdGFXNHdnZ0VpTUEwR0NTcUdTSWIzRFFFQkFRVUFBNElCRHdBd2dnRUtBb0lCQVFEVXVmVDAKb2ZzcEZzeXJjbnVWdXY1NVlhbGZXOW9qUEZlcDBRWk5XbWxJdEJsMmdpVjBGY0VvMjVWVmgyN3V0NjF4SHBlKwoyNStqWG4rem1WMzNjbnpiME5WQzRGTUUvQXE5TnNnanBEMXg5ZEtYN1JqYXpYeXI4eE1JNHJ2dllQVVdvWnp2CmQxc0ZxemROcW9GUnZEU2dzUDhYM0RFN1Fua0JqZmRUYms0eDlzK1VVNzRveTM3MXlNVE94VTVJTmNyRFp0MDQKcy9JMVlzMHdSZU9DRGxCcENtaklQbytaTEs2NnJVS0RBYmd0QVpJUkNMb0I1ZUZGay9iWWl4bW45eXFXV1Vzcgp1QStjZGVDV3RraXlmM0lDNDFhbE5OZ1A0Q3JKWnZoY1A3cnk2U2E1aE14cTViNWtsZEt4WjFLTVZBVHUxZnpXCjFmRkltVCthekFtYlE5bERBZ01CQUFHalZqQlVNQTRHQTFVZER3RUIvd1FFQXdJRm9EQVRCZ05WSFNVRUREQUsKQmdnckJnRUZCUWNEQWpBTUJnTlZIUk1CQWY4RUFqQUFNQjhHQTFVZEl3UVlNQmFBRlBoRVJwc1dnWVZBSXdNUgpMVmx5eUtMcEd0OUVNQTBHQ1NxR1NJYjNEUUVCQ3dVQUE0SUJBUUNPWHJXTzRJM1J2L25ZajZMbWE3VGt3RWtzCityY3JHOTVkaWphMUtsek9RTTNPMWFTREhTdU8rU1VUK0hKVW5VelVhZmJ1dmJqbDdCbEFkelFhR0ZwSGpDYXEKUC8xd1BsVXJ2RTJpSnpXR20wSkpvN0hqR081U3B2N2V4a1Z5WHcwS0E3eCt5VjhWaVg5Y3ZkL2UyekVvZTFMRwoyNlJ6SWpFZWRteTBzbytmaW1xamNGNllQZHhVQ1ZueTFSVWU4WldNWWFtNndEcElyOXI5VFVFMGxSN0V2dm1IClZORU43c3FPQ1I0TytsY3pRYytxQ2lXd1lDRld5dnI4QXdZeVJDSzNRNTZUbVRiVXdKMW5iaVE2UjhNRGtMVTQKOC81ZGk0dU5uK3lxSzlETkpvcUdVajQwYmtmcFY3QlhqUVZ6SHNXMnRrRllhTmJNUGR5S2xUVjY4OVZ0Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K
+    client-key-data: LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlFcEFJQkFBS0NBUUVBMUxuMDlLSDdLUmJNcTNKN2xicitlV0dwWDF2YUl6eFhxZEVHVFZwcFNMUVpkb0lsCmRCWEJLTnVWVllkdTdyZXRjUjZYdnR1Zm8xNS9zNWxkOTNKODI5RFZRdUJUQlB3S3ZUYklJNlE5Y2ZYU2wrMFkKMnMxOHEvTVRDT0s3NzJEMUZxR2M3M2RiQmFzM1RhcUJVYncwb0xEL0Y5d3hPMEo1QVkzM1UyNU9NZmJQbEZPKwpLTXQrOWNqRXpzVk9TRFhLdzJiZE9MUHlOV0xOTUVYamdnNVFhUXBveUQ2UG1TeXV1cTFDZ3dHNExRR1NFUWk2CkFlWGhSWlAyMklzWnAvY3FsbGxMSzdnUG5IWGdsclpJc245eUF1TldwVFRZRCtBcXlXYjRYRCs2OHVrbXVZVE0KYXVXK1pKWFNzV2RTakZRRTd0WDgxdFh4U0prL21zd0ptMFBaUXdJREFRQUJBb0lCQUI3QlA5UDZjemh1am1xZgpJNVR6TXdWVGhFeEFHRnFOeDlMS1lKSGdaMlpXZTNQeHZ2NTRnck9vZzMrWkZBVzVVbjhQUURzY3Y0aThDZFJxCmNQWnNlL2EveTRWZXIwSUNPbjgrbzFMYjFQSmI2dldDRnR6VFpwbnBpNi8yTDl1YzlmSXVyV1RGcWNnNUI4YlgKeHRpTlVFS0hOR283c0haejF0RE51SnM4VUZ2U29uSi9ENm1rdDRFZStNNGhTK0V6U0Nhd1RRclJVcC8wV3ZnWgoraUdBTHJNTmtER1FnSkV1RHdDVnZvM2VRem5PdHY2RjhLVjJvR2J3TjBLdkhRa0FSK0NjbUVCYU5DaWRsaHo0CmxHL1BFYVI4aThVNmFpbGNjUEFjelVIejVSc3ZWZGZ6N1dVaFllTUtmcGZlNVlJTlY3dzhwRmFvWjZ3TFlFcFkKUlFNNmtza0NnWUVBMm4zTVlRR1NOTElNaGJ3OWVYd3BGK0VIckplNlIxSy9DZ2NuSEJJd3dRSlBJUldWZ0pEMQpKaE52OVdxK2huNVE4L2xDcEhMWFFNdm9WdVpBU3A5Q0djWnFERjVnYnhCRklEZUZwVENCTkxnTkZ0cGo5RnMxCk5UV2tTMEo4YUlsVGEyRFkxekZnU2NMRWJkckVJbUozVGh2NVJ1OTUxeXh4bC9GblY3RUNwb1VDZ1lFQStUN00Kc0dES05wS1A5eEMrbjlxK1NCdXFjWlA0TWxKSDBnLyttQUd6NUd3TUR3SjdMWVI4SitIOEJWRXlBZjR1Q3VxMQpiNjU0NU9YVjdpcnByMWFYenRZSEtRMjk5WlJpU0p4bEpzNmFsVWJIYjZYblc3cFRUYVIzQTdPVE0wL2czcElYCmx4QlMvQkJ5d2hHOW1ocTFka20weWVxVTk0cU5FcjVSU1R0bS95Y0NnWUVBb0ZOVEY1T3BqMVZmYnZyME9TTHMKbklNWnVJSVZ4S1JwWHBobEVHb2dzR0JiWkRHTVpLejUxcGpJdk5NNVAwT05iNWxtVjNtVmpneVNUc0hpUjErWgpoNFJhNlB5UDBxK2pxY0pVSlNUMGlwVEx0Z3RHOFZYRU0ybExSNVpmNSsxczh3dzcwWngveFdCUDl6UmlXOERaClBzMjBHMk02aXJRb0hwQ2Jmbk43T0drQ2dZRUFpdC8yNVAvSkxBY1Z1Qy9ZUnZGMnZHN04xV01CRStqTW83ck4Kdkp5V1Exd0FqQXh4M2JiSUJ1RGZyNGJDT21JSi9ZTXhmUHpWMTVSSVV1QU9QT2dleGR4ek9PaXpRelplWE43bgpiV3dJcmN3MkszdGhJYmI3MjNNYjdUQU5nTFd0TWRaczFucitBZnlZTkpIMTl2dVN5RW5oTmZCQytIcDJpRThLCnM2Y3BpRmtDZ1lCQzJOL3FuYWNaY0N5bFM4dS9VUnFEM3FXSlkxeTVBQnJtaGNpMmtua05SejlpMFFQVWdXSXQKL2o2aUlRVGRRZkhDRFhCT3VucURFUzdxOVFCVmhlT1dZMUM3cG1uSTI5Q2ZMeGVyTkl5VzZrdGVadWtJYW1LagpxSWhLbmltaHdEMElUVkZDY2JXNXg2aDZoRngrMXplbjNaeTA5YkQ0a2d1aVA3N0NuNmd5aGc9PQotLS0tLUVORCBSU0EgUFJJVkFURSBLRVktLS0tLQo=
+
 </details>
 
 
 Проверяю pods.
 
 ~~~
-yc-user@node1:~$ sudo kubectl get pods --all-namespaces
+ubuntu@node0:~$ sudo kubectl get pods --all-namespaces
 NAMESPACE     NAME                                       READY   STATUS    RESTARTS   AGE
-default       nginx-56fcf95486-g5rgm                     1/1     Running   0          3m39s
-default       nginx-56fcf95486-rn4sc                     1/1     Running   0          3m39s
-kube-system   calico-kube-controllers-6c7b7dc5d8-snwfw   1/1     Running   0          20m
-kube-system   calico-node-72k6m                          1/1     Running   0          21m
-kube-system   calico-node-l6tmj                          1/1     Running   0          21m
-kube-system   calico-node-w9qpw                          1/1     Running   0          21m
-kube-system   coredns-69db55dd76-7kz7g                   1/1     Running   0          20m
-kube-system   coredns-69db55dd76-r5bk2                   1/1     Running   0          20m
-kube-system   dns-autoscaler-6f4b597d8c-tcljb            1/1     Running   0          20m
-kube-system   kube-apiserver-node1                       1/1     Running   1          23m
-kube-system   kube-controller-manager-node1              1/1     Running   2          23m
-kube-system   kube-proxy-hkthz                           1/1     Running   0          22m
-kube-system   kube-proxy-hpggq                           1/1     Running   0          22m
-kube-system   kube-proxy-jcgx9                           1/1     Running   0          22m
-kube-system   kube-scheduler-node1                       1/1     Running   1          23m
-kube-system   nginx-proxy-node2                          1/1     Running   0          22m
-kube-system   nginx-proxy-node3                          1/1     Running   0          22m
-kube-system   nodelocaldns-8wvtm                         1/1     Running   0          20m
-kube-system   nodelocaldns-97nxj                         1/1     Running   0          20m
-kube-system   nodelocaldns-rbf9s                         1/1     Running   0          20m
+kube-system   calico-kube-controllers-6c7b7dc5d8-5fh7f   1/1     Running   0          6m20s
+kube-system   calico-node-28c5f                          1/1     Running   0          7m9s
+kube-system   calico-node-b899x                          1/1     Running   0          7m9s
+kube-system   calico-node-dv4r8                          1/1     Running   0          7m9s
+kube-system   coredns-69db55dd76-wjlkk                   1/1     Running   0          5m45s
+kube-system   coredns-69db55dd76-z247p                   1/1     Running   0          5m49s
+kube-system   dns-autoscaler-6f4b597d8c-gxxjq            1/1     Running   0          5m46s
+kube-system   kube-apiserver-node0                       1/1     Running   2          8m55s
+kube-system   kube-controller-manager-node0              1/1     Running   2          8m54s
+kube-system   kube-proxy-l2558                           1/1     Running   0          8m1s
+kube-system   kube-proxy-rkrwm                           1/1     Running   0          8m1s
+kube-system   kube-proxy-zsqxg                           1/1     Running   0          8m1s
+kube-system   kube-scheduler-node0                       1/1     Running   1          8m54s
+kube-system   nginx-proxy-node1                          1/1     Running   0          8m5s
+kube-system   nginx-proxy-node2                          1/1     Running   0          8m3s
+kube-system   nodelocaldns-bbm7v                         1/1     Running   0          5m45s
+kube-system   nodelocaldns-dzrhp                         1/1     Running   0          5m45s
+kube-system   nodelocaldns-vsvck                         1/1     Running   0          5m45s
+
 
 ~~~
