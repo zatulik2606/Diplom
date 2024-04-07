@@ -256,7 +256,7 @@ sudo pip3.10 install -r requirements.txt
 Задекларировал IP
 
 ~~~
-declare -a IPS=(10.1.2.15 10.1.2.19 10.1.2.5 10.1.2.29 10.1.2.18)
+declare -a IPS=(178.154.202.215 158.160.84.126 158.160.158.110)
 
 ~~~
 
@@ -268,7 +268,7 @@ CONFIG_FILE=inventory/mycluster/hosts.yaml python3.10 contrib/inventory_builder/
 
 ~~~
 
-Пример файла ( user и ssh д.б. !)
+Изменил конфиг
 
 
 
@@ -277,23 +277,24 @@ root@debianv:~/diplom/k8s/kubespray# cat ~/diplom/k8s/kubespray/inventory/myclus
 all:
   hosts:
     node1:
-      ansible_host: 178.154.222.252
-        #ip: 178.154.222.252
-        #access_ip: 178.154.222.252
-      ansible_user: yc-user
-      ansible_ssh_private_key_file: ~/.ssh/id_rsa.pub  
+      ansible_host: 178.154.202.215
+        #ip: 178.154.202.215
+        #access_ip: 178.154.202.215
+      ansible_user: ubuntu
+      ansible_ssh_private_key_file: ~/.ssh/id_rsa   
+
     node2:
-      ansible_host: 178.154.226.190
-        #ip: 178.154.226.190
-        #access_ip: 178.154.226.190
-      ansible_user: yc-user
-      ansible_ssh_private_key_file: ~/.ssh/ida_rsa.pub  
+      ansible_host: 158.160.84.126
+        #ip: 158.160.84.126
+        #access_ip: 158.160.84.126i
+      ansible_user: ubuntu
+      ansible_ssh_private_key_file: ~/.ssh/id_rsa  
     node3:
-      ansible_host: 178.154.226.36
-        #ip: 178.154.226.36
-        #access_ip: 178.154.226.36
-      ansible_user: yc-user
-      ansible_ssh_private_key_file: ~/.ssh/id_rsa.pub  
+      ansible_host: 158.160.158.110
+        #ip: 158.160.158.110
+        #access_ip: 158.160.158.110
+      ansible_user: ubuntu
+      ansible_ssh_private_key_file: ~/.ssh/id_rsa  
   children:
     kube_control_plane:
       hosts:
@@ -316,43 +317,7 @@ all:
 ~~~
 
 
-Сделал вручную файл с хостами.
 
-~~~
-
-cat ~/diplom/k8s/kubespray/inventory/mycluster/inventory.ini
-# ## Configure 'ip' variable to bind kubernetes services on a
-# ## different ip than the default iface
-# ## We should set etcd_member_name for etcd cluster. The node that is not a etcd member do not need to set the value, or can set the empty string value.
-[all]
-
-node0 ansible_host=158.160.97.147 ansible_user=ubuntu
-node1 ansible_host=178.154.202.124 ansible_user=ubuntu
-node2 ansible_host=178.154.207.17 ansible_user=ubuntu
-
-# ## configure a bastion host if your nodes are not directly reachable
-# [bastion]
-# bastion ansible_host=x.x.x.x ansible_user=some_user
-
-[kube_control_plane]
-# node0
-
-[etcd]
-# node0
-
-[kube_node]
-# node1
-# node2
-
-[calico_rr]
-
-[k8s_cluster:children]
-kube_control_plane
-kube_node
-calico_rr
-
-
-~~~
 
 
 Запустил playbook
@@ -366,10 +331,11 @@ ansible-playbook -i inventory/mycluster/hosts.yaml cluster.yml -b -v
 Заходим на первую ВМ и проверим версию kube
 
 ~~~
-yc-user@node1:~$ sudo kubectl version
+ubuntu@node1:~$  sudo kubectl version
 Client Version: v1.29.3
 Kustomize Version: v5.0.4-0.20230601165947-6ce0bf390ce3
 Server Version: v1.29.3
+
 ~~~
 
 Проверяем ноды (если возникает ошибка с портом  ,то 
@@ -383,19 +349,57 @@ sudo chown $(id -u):$(id -g) $HOME/.kube/config
 )
 
 ~~~
-yc-user@node1:~$ sudo kubectl get nodes
+
+ubuntu@node1:~$ sudo kubectl get nodes
 NAME    STATUS   ROLES           AGE   VERSION
-node1   Ready    control-plane   17m   v1.29.3
-node2   Ready    <none>          16m   v1.29.3
-node3   Ready    <none>          16m   v1.29.3
+node1   Ready    control-plane   10m   v1.29.3
+node2   Ready    <none>          10m   v1.29.3
+node3   Ready    <none>          10m   v1.29.3
 
 ~~~
 
-Сделал пробные конфиги.
+Смотрим Kubernetes кластер
 
 ~~~
-yc-user@node1:~$ sudo kubectl create deploy nginx --image=nginx:latest --replicas=2
-deployment.apps/nginx created
+ubuntu@node1:~$  kubectl get all --all-namespaces
+NAMESPACE     NAME                                           READY   STATUS    RESTARTS   AGE
+kube-system   pod/calico-kube-controllers-6c7b7dc5d8-phjxh   1/1     Running   0          8m55s
+kube-system   pod/calico-node-bbjt9                          1/1     Running   0          9m39s
+kube-system   pod/calico-node-bwtcc                          1/1     Running   0          9m39s
+kube-system   pod/calico-node-d858r                          1/1     Running   0          9m39s
+kube-system   pod/coredns-69db55dd76-7mjql                   1/1     Running   0          8m26s
+kube-system   pod/coredns-69db55dd76-cq757                   1/1     Running   0          8m21s
+kube-system   pod/dns-autoscaler-6f4b597d8c-4px7w            1/1     Running   0          8m23s
+kube-system   pod/kube-apiserver-node1                       1/1     Running   1          11m
+kube-system   pod/kube-controller-manager-node1              1/1     Running   2          11m
+kube-system   pod/kube-proxy-djw7n                           1/1     Running   0          10m
+kube-system   pod/kube-proxy-hvr6n                           1/1     Running   0          10m
+kube-system   pod/kube-proxy-mw7c5                           1/1     Running   0          10m
+kube-system   pod/kube-scheduler-node1                       1/1     Running   1          11m
+kube-system   pod/nginx-proxy-node2                          1/1     Running   0          10m
+kube-system   pod/nginx-proxy-node3                          1/1     Running   0          10m
+kube-system   pod/nodelocaldns-bgx56                         1/1     Running   0          8m22s
+kube-system   pod/nodelocaldns-qkfpr                         1/1     Running   0          8m22s
+kube-system   pod/nodelocaldns-rcv6c                         1/1     Running   0          8m22s
+
+NAMESPACE     NAME                 TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)                  AGE
+default       service/kubernetes   ClusterIP   10.233.0.1   <none>        443/TCP                  11m
+kube-system   service/coredns      ClusterIP   10.233.0.3   <none>        53/UDP,53/TCP,9153/TCP   8m26s
+
+NAMESPACE     NAME                          DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR            AGE
+kube-system   daemonset.apps/calico-node    3         3         3       3            3           kubernetes.io/os=linux   9m40s
+kube-system   daemonset.apps/kube-proxy     3         3         3       3            3           kubernetes.io/os=linux   11m
+kube-system   daemonset.apps/nodelocaldns   3         3         3       3            3           kubernetes.io/os=linux   8m22s
+
+NAMESPACE     NAME                                      READY   UP-TO-DATE   AVAILABLE   AGE
+kube-system   deployment.apps/calico-kube-controllers   1/1     1            1           8m56s
+kube-system   deployment.apps/coredns                   2/2     2            2           8m27s
+kube-system   deployment.apps/dns-autoscaler            1/1     1            1           8m25s
+
+NAMESPACE     NAME                                                 DESIRED   CURRENT   READY   AGE
+kube-system   replicaset.apps/calico-kube-controllers-6c7b7dc5d8   1         1         1       8m56s
+kube-system   replicaset.apps/coredns-69db55dd76                   2         2         2       8m27s
+kube-system   replicaset.apps/dns-autoscaler-6f4b597d8c            1         1         1       8m25s
 
 ~~~
 Проверяем конфиги для доступа
