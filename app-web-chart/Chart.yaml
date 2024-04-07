@@ -1,0 +1,7 @@
+apiVersion: v2
+name: app-web-chart
+description: My app for diplom
+
+type: application
+
+version: 0.1.0
