@@ -326,8 +326,7 @@ kube-system   nodelocaldns-zcwfw                         1/1     Running   0    
 
 ## Решение
 
-Создаем приложение на helm chart
-
+...
 
 ~~~
 ubuntu@node0:~/myapp$ helm create myapp-chart
@@ -356,6 +355,52 @@ Creating myapp-chart
 2. Http доступ к web интерфейсу grafana.
 3. Дашборды в grafana отображающие состояние Kubernetes кластера.
 4. Http доступ к тестовому приложению.
+
+
+## Решение
+
+Устанавливаю  мониторинг при помощи helm
+
+Сделал отдельный namespace:
+
+~~~
+ubuntu@node0:~$ sudo kubectl create namespace monitoring
+namespace/monitoring created
+
+~~~
+
+Добавил репо 
+
+
+~~~
+ubuntu@node0:~$ sudo helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+"prometheus-community" has been added to your repositories
+
+~~~
+
+Установил 
+
+~~~
+ubuntu@node0:~$ sudo helm install stable prometheus-community/kube-prometheus-stack --namespace=monitoring
+
+NAME: stable
+LAST DEPLOYED: Wed Apr 10 08:55:47 2024
+NAMESPACE: monitoring
+STATUS: deployed
+REVISION: 1
+NOTES:
+kube-prometheus-stack has been installed. Check its status by running:
+  kubectl --namespace monitoring get pods -l "release=stable"
+
+Visit https://github.com/prometheus-operator/kube-prometheus for instructions on how to create & configure Alertmanager and Prometheus instances using the Operator.
+
+~~~
+
+Чтобы подключится к серверу извне перенастроим сервисы prometheus и grafana. NodePort
+
+~~~
+
+~~~
 
 ---
 ### Установка и настройка CI/CD
