@@ -361,15 +361,9 @@ Creating myapp-chart
 
 Устанавливаю  мониторинг при помощи helm
 
-Сделал отдельный namespace:
 
-~~~
-ubuntu@node0:~$ sudo kubectl create namespace monitoring
-namespace/monitoring created
 
-~~~
-
-Добавил репо 
+Добавил репо   
 
 
 ~~~
@@ -393,6 +387,22 @@ kube-prometheus-stack has been installed. Check its status by running:
   kubectl --namespace monitoring get pods -l "release=stable"
 
 Visit https://github.com/prometheus-operator/kube-prometheus for instructions on how to create & configure Alertmanager and Prometheus instances using the Operator.
+
+~~~
+
+Смотрю, что получилось
+
+~~~
+ubuntu@node0:~$ kubectl get svc --namespace=monitoring
+NAME                                      TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)                      AGE
+alertmanager-operated                     ClusterIP   None            <none>        9093/TCP,9094/TCP,9094/UDP   2m49s
+prometheus-operated                       ClusterIP   None            <none>        9090/TCP                     2m49s
+stable-grafana                            ClusterIP   10.233.23.122   <none>        80/TCP                       3m
+stable-kube-prometheus-sta-alertmanager   ClusterIP   10.233.8.230    <none>        9093/TCP,8080/TCP            3m
+stable-kube-prometheus-sta-operator       ClusterIP   10.233.53.29    <none>        443/TCP                      3m
+stable-kube-prometheus-sta-prometheus     ClusterIP   10.233.37.19    <none>        9090/TCP,8080/TCP            3m
+stable-kube-state-metrics                 ClusterIP   10.233.26.227   <none>        8080/TCP                     3m
+stable-prometheus-node-exporter           ClusterIP   10.233.62.119   <none>        9100/TCP                     3m
 
 ~~~
 
