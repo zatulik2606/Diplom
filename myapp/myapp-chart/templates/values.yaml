@@ -1,0 +1,8 @@
+image_frontend:
+  repository: "zatulik2606/myapp"
+  tag: ""
+
+image:
+  tag: "latest"
+
+namespace: ""

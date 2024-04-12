@@ -1,0 +1,7 @@
+apiVersion: v2
+name: myapp-chart
+description: myapp-chart
+
+type: application
+
+version: 0.1.0
