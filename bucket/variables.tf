@@ -1,4 +1,3 @@
-
 # Заменить на ID своего облака
 # https://console.cloud.yandex.ru/cloud?section=overview
 variable "cloud_id" {
